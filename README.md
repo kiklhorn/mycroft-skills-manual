@@ -11,6 +11,7 @@ Přeloženo:
 -mycroft-reminder.mycroftai  
 -mycroft-speak.mycroftai  
 -mycroft-volume.mycroftai 
+
 ##########  
 mycroft-joke.mycroftai  
 mycroft-naptime.mycroftai  
