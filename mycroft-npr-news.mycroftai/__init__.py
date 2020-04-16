@@ -130,6 +130,9 @@ FEEDS = {
     "OE3": ("Ö3 Nachrichten",
             "https://oe3meta.orf.at/oe3mdata/StaticAudio/Nachrichten.mp3",
             None),
+    "ZIV": ("Živě.cz",                  # TODO need find better news feed
+            "https://www.zive.cz/media/podcast.ashx?type=2",
+            None),    
 }
 
 
