@@ -1,6 +1,6 @@
 # mycroft-skills-manual  
 ##########  
-Přeloženo:  
+Translated:  
 -fallback-query.mycroftai  
 -fallback-unknown.mycroftai  
 -fallback-wolfram-alpha.mycroftai  
@@ -12,7 +12,8 @@ Přeloženo:
 -mycroft-speak.mycroftai  
 -mycroft-volume.mycroftai 
 
-##########  
+##########
+In work:
 mycroft-joke.mycroftai  
 mycroft-naptime.mycroftai  
 mycroft-npr-news.mycroftai  
