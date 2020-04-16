@@ -10,16 +10,18 @@ Translated:
 -mycroft-ip.mycroftai  
 -mycroft-reminder.mycroftai  
 -mycroft-speak.mycroftai  
--mycroft-volume.mycroftai
--mycroft-spelling.mycroftai
--mycroft-stock.mycroftai
--mycroft-stop.mycroftai 
+-mycroft-volume.mycroftai  
+-mycroft-spelling.mycroftai  
+-mycroft-stock.mycroftai  
+-mycroft-stop.mycroftai  
+-mycroft-joke.mycroftai  
+-mycroft-naptime.mycroftai 
+-mycroft-npr-news.mycroftai  
 
 ##########  
+
+=======
 In work:  
-mycroft-joke.mycroftai  
-mycroft-naptime.mycroftai  
-mycroft-npr-news.mycroftai  
 mycroft-pairing.mycroftai  
 mycroft-personal.mycroftai  
 mycroft-playback-control.mycroftai  
