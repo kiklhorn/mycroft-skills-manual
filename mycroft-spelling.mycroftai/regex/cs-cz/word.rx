@@ -1,0 +1,1 @@
+(hláskuj slovo|hláskuj slova|hláskování slova|hláskuj|hláskování) (?P<Word>\w+)

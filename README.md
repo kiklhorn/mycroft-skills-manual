@@ -10,7 +10,10 @@ Přeloženo:
 -mycroft-ip.mycroftai  
 -mycroft-reminder.mycroftai  
 -mycroft-speak.mycroftai  
--mycroft-volume.mycroftai 
+-mycroft-volume.mycroftai
+-mycroft-spelling.mycroftai
+-mycroft-stock.mycroftai
+-mycroft-stop.mycroftai 
 
 ##########  
 mycroft-joke.mycroftai  
@@ -20,13 +23,9 @@ mycroft-pairing.mycroftai
 mycroft-personal.mycroftai  
 mycroft-playback-control.mycroftai  
 mycroft-singing.mycroftai  
-mycroft-spelling.mycroftai  
-mycroft-stock.mycroftai  
-mycroft-stop.mycroftai  
 mycroft-support-helper.mycroftai  
 mycroft-timer.mycroftai  
-mycroft-version-checker.mycroftai  
-mycroft-volume.mycroftai  
+mycroft-version-checker.mycroftai   
 mycroft-weather.mycroftai  
 mycroft-wiki.mycroftai  
 mycroft-alarm.mycroftai  
