@@ -1,0 +1,5 @@
+řekni (?P<Words>.*)
+mluv (?P<Words>.*)
+opakuj (?P<Words>.*)
+zopakuj (?P<Words>.*)
+
