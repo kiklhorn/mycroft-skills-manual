@@ -15,7 +15,7 @@ Translated:
 -mycroft-stock.mycroftai  
 -mycroft-stop.mycroftai  
 -mycroft-joke.mycroftai  
--mycroft-naptime.mycroftai 
+-mycroft-naptime.mycroftai  
 -mycroft-npr-news.mycroftai  
 
 ##########  
