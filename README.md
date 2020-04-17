@@ -17,12 +17,12 @@ Translated:
 -mycroft-joke.mycroftai  
 -mycroft-naptime.mycroftai  
 -mycroft-npr-news.mycroftai  
+-mycroft-pairing.mycroftai  
 
 ##########  
-
 =======
 In work:  
-mycroft-pairing.mycroftai  
+
 mycroft-personal.mycroftai  
 mycroft-playback-control.mycroftai  
 mycroft-singing.mycroftai  
