@@ -18,13 +18,13 @@ Translated:
 -mycroft-naptime.mycroftai  
 -mycroft-npr-news.mycroftai  
 -mycroft-pairing.mycroftai  
+-mycroft-personal.mycroftai  
+-mycroft-playback-control.mycroftai  
 
 ##########  
 =======
 In work:  
 
-mycroft-personal.mycroftai  
-mycroft-playback-control.mycroftai  
 mycroft-singing.mycroftai  
 mycroft-support-helper.mycroftai  
 mycroft-timer.mycroftai  

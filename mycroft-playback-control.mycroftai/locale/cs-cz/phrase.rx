@@ -1,0 +1,3 @@
+pusť (?P<Phrase>.*)
+spusť (?P<Phrase>.*)
+přehrej (?P<Phrase>.*)
