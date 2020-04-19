@@ -1,0 +1,4 @@
+\bfor.* (nazvaný) (?P<Name>.*)
+\b(nazvaný) (?P<Name>.*)
+\b^.*(časovač) (?P<Name>.*)
+\b^.* (?P<Name>.*)(?<!další)(?<!nějaký)(?<!můj)(?<!další jeden)(?<!náš)(?<!ten) časovač$
