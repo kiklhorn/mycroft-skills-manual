@@ -24,7 +24,7 @@ Translated:
 -mycroft-singing.mycroftai  
 -mycroft-support-helper.mycroftai  
 -mycroft-version-checker.mycroftai  
-
+-mycroft-configuration.mycroftai  
 ##########  
 In work:  
 
@@ -32,6 +32,5 @@ mycroft-weather.mycroftai
 mycroft-wiki.mycroftai  
 mycroft-alarm.mycroftai  
 mycroft-audio-record.mycroftai  
-mycroft-configuration.mycroftai  
 mycroft-fallback-duck-duck-go.mycroftai  
 homeassistant.mycroftai  
