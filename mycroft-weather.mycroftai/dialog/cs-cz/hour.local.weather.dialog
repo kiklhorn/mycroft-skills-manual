@@ -1,4 +1,4 @@
-It will be {condition}, with temperatures near {temp}
-Later it will be {condition} and around {temp} degrees
-Later it will be {condition} and {temp} degrees
-Around {temp} degrees with {condition}
+Bude {condition} s teplotami blízkými k {temp} stupňů
+Později bude {condition} a kolem {temp} stupňů
+Později bude {condition} a {temp} stupňů
+Kolem {temp} stupňů a bude {condition}
