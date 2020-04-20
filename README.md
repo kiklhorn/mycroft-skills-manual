@@ -20,12 +20,12 @@ Translated:
 -mycroft-pairing.mycroftai  
 -mycroft-personal.mycroftai  
 -mycroft-playback-control.mycroftai  
+-mycroft-singing.mycroftai  
 
 ##########  
 =======
 In work:  
 
-mycroft-singing.mycroftai  
 mycroft-support-helper.mycroftai  
 mycroft-timer.mycroftai  
 mycroft-version-checker.mycroftai   
