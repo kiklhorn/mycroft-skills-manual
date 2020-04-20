@@ -1,0 +1,3 @@
+# Jasné typy počasí používané v handleru pro „bude jasné počasí“
+(jasno|slunečno|slunce)
+(dobré|pěkné) počasí
