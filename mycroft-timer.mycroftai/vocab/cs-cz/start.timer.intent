@@ -1,0 +1,8 @@
+(další|druhý|třetí|čtvrtý|pátý|) časovač ((na |){duration}|)
+šťouchni do mě po {duration}
+(nastav|spusť|vytvoř) časovač
+(nastav|spusť|vytvoř) časovač na {duration}
+(nastav|spusť|vytvoř) časovač (nazvaný|s názvem) {name}
+(nastav|spusť|vytvoř) {duration} časovač
+(nastav|spusť|vytvoř) {duration} časovač (nazvaný|s názvem) {name}
+(nastav|spusť|vytvoř) časovač (nazvaný|s názvem) {name} na {duration}
