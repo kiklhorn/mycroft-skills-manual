@@ -29,8 +29,8 @@ Translated:
 -mycroft-alarm.mycroftai  
 -mycroft-audio-record.mycroftai  
 -mycroft-fallback-duck-duck-go.mycroftai  
+-mycroft-wiki.mycroftai  
 ##########  
 In work:  
- 
-mycroft-wiki.mycroftai  
+
 homeassistant.mycroftai
