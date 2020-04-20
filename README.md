@@ -27,11 +27,6 @@ Translated:
 ##########  
 In work:  
 
-<<<<<<< HEAD
-mycroft-timer.mycroftai  
-=======
-mycroft-support-helper.mycroftai  
->>>>>>> 71ce38afd40930b4214ed42f754d40b91ebbc25b
 mycroft-version-checker.mycroftai   
 mycroft-weather.mycroftai  
 mycroft-wiki.mycroftai  
