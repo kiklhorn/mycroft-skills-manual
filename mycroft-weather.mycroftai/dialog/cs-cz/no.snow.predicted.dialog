@@ -1,3 +1,3 @@
-# When user asks if it's snowing but no snow or alternative is forcasted
-No snow is predicted for {location}
-It will not snow in {location}
+# Když se uživatel zeptá, zda sněží, ale není sníh ani jiná alternativa
+Pro {location} se nepředpovídá žádný sníh
+Nebude sněžit na {location}
