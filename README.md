@@ -23,11 +23,11 @@ Translated:
 -mycroft-timer.mycroftai  
 -mycroft-singing.mycroftai  
 -mycroft-support-helper.mycroftai  
+-mycroft-version-checker.mycroftai  
 
 ##########  
 In work:  
 
-mycroft-version-checker.mycroftai   
 mycroft-weather.mycroftai  
 mycroft-wiki.mycroftai  
 mycroft-alarm.mycroftai  
