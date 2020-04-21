@@ -1,3 +1,3 @@
-It's currently {condition} and {temp} degrees {scale} in {location}. Today's forecast is for a high of {temp_max} and a low of {temp_min}.
-Right now, it's {condition} and {temp} degrees, for a high of {temp_max} and a low of {temp_min} in {location}.
-With a high of {temp_max} and a low of {temp_min}, {location} has {condition} and is currently {temp} degrees.
+Momentálně je {condition} a {temp} stupňů {stupnice} na {location}. Dnešní předpověď je pro maximum {temp_max} a minimum {temp_min}.
+V {location} je právě teď {condition} s teplotou {temp} stupňů, v maximech {temp_max} a minimech {temp_min} stupňů.
+V {location} je {condition} s aktuální teplotou {temp} stupňů, v maximech {temp_max} a minimech {temp_min} stupňů.

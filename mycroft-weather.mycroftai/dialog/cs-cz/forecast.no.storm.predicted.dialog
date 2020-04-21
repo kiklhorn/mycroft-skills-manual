@@ -1,4 +1,4 @@
-# When user asks if it's raining but no rain or alternative is forcasted
-No storm is predicted for {location} {day}
-{day}, it should not storm in {location}
-It is unlikely to storm {day} in {location}
+# Když se uživatel zeptá, zda prší, ale neprší a není předpovězena ani jiná alternativa
+Pro {location} v {day} se nepředpovídá žádná bouře
+Na {day}, by neměla být v {location} žádná bouře
+Je nepravděpodobné, že v {day} bude bouře v {location}
