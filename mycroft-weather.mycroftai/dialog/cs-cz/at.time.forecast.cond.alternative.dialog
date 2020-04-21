@@ -1,3 +1,3 @@
-# Informing that an alternative to clear skies will occur at specified time
-No, the {time} forecast {day} calls for {condition} in {location}
-Doesn't seem so, the {time} forecast {day} suggests {location} will have {condition}
+# Informovat, že alternativa k jasnému nebi nastane v určený čas
+Ne, předpověď na {day} v {time} ukazuje {condition} v lokalitě {location}
+Nezdá se, předpověď na {day} v {time} naznačuje, že v lokalitě {location} bude {condition}

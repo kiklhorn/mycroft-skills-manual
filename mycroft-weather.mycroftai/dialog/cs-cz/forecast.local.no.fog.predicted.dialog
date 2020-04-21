@@ -1,3 +1,3 @@
-# When user asks if it's foggy but no snow or alternative is forcasted
-{day} the visibility should be good
-No fog is predicted {day}
+# Když se uživatel zeptá, zda je mlha, ale není předpovídán sníh ani jiná alternativa
+V {day} by měla být viditelnost dobrá
+Na {day} se nepředpovídá žádná mlha

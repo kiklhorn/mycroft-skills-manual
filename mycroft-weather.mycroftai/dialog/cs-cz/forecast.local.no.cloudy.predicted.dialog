@@ -1,5 +1,5 @@
-# When user asks if it's cloudy but it's not
-It doesn't seem like it's going to be cloudy {day}
-Clear skies are forecast {day}
-Expect clear skies {day}
-It should not be cloudy {day}
+# Když se uživatel zeptá, zda je zataženo, ale není
+Nezdá se, že bude v {day} zataženo
+Na {day} předpověď ukazuje jasnou oblohu
+V {day} očekávej jasnou oblohu
+V {day} by nemělo být zataženo

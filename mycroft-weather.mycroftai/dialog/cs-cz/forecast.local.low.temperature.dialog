@@ -1,2 +1,2 @@
-{day} it will be as low as {temp_min}
-{day} the temperature will be as low as {temp_min} degrees.
+V {day} bude nejnižší teplota {temp_min}
+V {den} bude nejnižší teplota {temp_min} stupňů.

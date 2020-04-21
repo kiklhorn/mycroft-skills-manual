@@ -1,4 +1,4 @@
-# Informing that an alternative to clear skies will occur
-# No, the forecast {day} calls for {condition} in {location}
-# It should not be cloudy in {location} {day}, it looks like there'll be {condition}
-Doesn't seem so, chances are {location} will have {condition} {day}
+# Informovat, že nastane alternativa k jasné obloze
+Ne, předpověď na {day} ukazuje {condition} v lokalitě {location}
+V {day} v {location} by nemělo být zataženo, vypadá to že pravděpodobně bude {condition}
+Nezdá se to pravděpodobné. V {day} v {location} je pravděpodobné, že bude {condition}

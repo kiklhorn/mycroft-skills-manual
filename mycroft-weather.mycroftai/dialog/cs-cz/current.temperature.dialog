@@ -1,4 +1,3 @@
-It's currently {temp} degrees {scale} in {location}. 
-It's currently {temp} degrees in {location}.
-Right now, it's {temp} degrees in {location}.
-
+Momentálně je v {location} {temp} stupňů {scale}.
+Momentálně je v {location} {temp} stupňů.
+Právě teď je {temp} stupňů v lokalitě {location}.

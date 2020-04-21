@@ -1,4 +1,4 @@
-# Informing that an alternative to fog will occur
-No, the forecast {day} for {location} calls for {condition}
-It looks like there'll be {condition} in {location} {day}
-Chances are it's going to be {condition} in {location} {day}
+# Informovat, že nastane alternativa k mlze
+Ne, předpověď na {day} pro lokalitu {location} ukazuje {condition}
+Vypadá to, že v {day} v {location} bude {condition}
+Je šance, že v {day} v {location} bude {condition}

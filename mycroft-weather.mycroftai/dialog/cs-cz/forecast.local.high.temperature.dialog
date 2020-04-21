@@ -1,2 +1,2 @@
-{day} it will be as high as {temp_max}
-{day} the temperature will be as high as {temp_max} degrees.
+V {day} budou nejvyšší teploty {temp_max}
+V {day} budou nejvyšší teploty {temp_max} stupňů.

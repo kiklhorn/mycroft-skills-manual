@@ -1,4 +1,3 @@
-A low of {temp_min} degrees {scale} is expected. 
-A low of {temp_min} degrees can be expected.
-Today it will be as low as {temp_min} degrees.
-
+Očekává se nejnižší teplota {temp_min} stupňů {scale}.
+Lze očekávat nejnižší teplotu {temp_min} stupňů.
+Dnešní nejnižší teploty budou {temp_min} stupňů.

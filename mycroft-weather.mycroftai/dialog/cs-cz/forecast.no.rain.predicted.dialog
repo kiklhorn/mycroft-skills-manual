@@ -1,4 +1,4 @@
-# When user asks if it's raining but no rain or alternative is forcasted
-No rain is predicted for {location} {day}
-{day}, it should not rain in {location}
-There's no need for an umbrella in {location} {day}
+# Když se uživatel zeptá, zda prší, ale neprší a žádný déšť ani jiná alternativa neni předpovídána
+Pro {location} na {day} se nepředpovídá žádný déšť
+Na {day}, by nemělo v {location} pršet 
+V {location} v {day} není potřeba deštník

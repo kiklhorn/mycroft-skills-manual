@@ -1,4 +1,3 @@
 {day} očekávej {condition}, s nejvyšší denní teplotou {temp_max} a s nejnižší denní teplotou {temp_min}
-{day} bude nejvyšší denní teplota {temp_max} a nejnižší denní teplota {temp_min}, s {condition}
-{day} bude {condition} s nejvyšší denní teplotou {temp_max} a nejnižší denní teplotou {temp_min}
-Prognóza na {day}. Nejvyšší denní teploty se budou pohybovat na {temp_max} a nejnižší denní teploty na {temp_min}
+{day} bude {condition} s nejvyšší denní teplotou {temp_max} a nejnižší denní teplota {temp_min}
+Předpověď na {day}: nejvyšší denní teploty se budou pohybovat na {temp_max} a nejnižší denní teploty na {temp_min}
