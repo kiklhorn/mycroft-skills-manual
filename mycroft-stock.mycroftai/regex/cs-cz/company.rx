@@ -1,2 +1,1 @@
-cena (?P<Company>.*)
-je (?P<Company>.*) obchodována na
+(?P<Company>.*)
