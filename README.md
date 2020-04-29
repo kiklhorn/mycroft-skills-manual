@@ -1,5 +1,10 @@
 # mycroft-skills-manual  
 ##########  
+Tested and OK:  
+-mycroft-stop.mycroftai  
+
+
+##########  
 Translated:  
 -fallback-query.mycroftai  
 -fallback-unknown.mycroftai  
@@ -13,7 +18,6 @@ Translated:
 -mycroft-volume.mycroftai  
 -mycroft-spelling.mycroftai  
 -mycroft-stock.mycroftai  
--mycroft-stop.mycroftai  
 -mycroft-joke.mycroftai  
 -mycroft-naptime.mycroftai  
 -mycroft-npr-news.mycroftai  
