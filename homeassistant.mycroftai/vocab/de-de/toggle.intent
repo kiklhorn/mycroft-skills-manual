@@ -1,0 +1,10 @@
+umschalten {Entity}
+(Der|Des|Dem|Den|Die|Das) {Entity} umschalten 
+Kannst du {Entity} bitte umschalten?
+Kannst du (Der|Des|Dem|Den|Die|Das) {Entity} bitte umschalten?
+Kannst du {Entity} umschalten bitte?
+Kannst du (Der|Des|Dem|Den|Die|Das) {Entity} umschalten bitte?
+Ich möchte gerne {Entity} umschalten
+Ich möchte {Entity} umschalten
+Ich möchte gerne (Der|Des|Dem|Den|Die|Das) {Entity} umschalten
+Ich möchte (Der|Des|Dem|Den|Die|Das) {Entity} umschalten
