@@ -1,2 +1,1 @@
-(Your|The) next alarm is {when}, {duration} from now
-(Your|The) next alarm is for {when}, {duration} from now
+Váš další alarm je {when}, {duration} od teď.

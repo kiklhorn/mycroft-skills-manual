@@ -132,7 +132,7 @@ class VersionCheckerSkill(MycroftSkill):
         self.enclosure.deactivate_mouth_events()
         self.enclosure.mouth_text(CORE_VERSION_STR + "b")  # b for Beta
         self.speak_dialog('version', self.ver_data(cur_ver))
-        mycroft.util.wait_while_speaking()
+        wait_while_speaking()
         self.enclosure.activate_mouth_events()
 
         if cur_ver == new_ver:
@@ -168,7 +168,7 @@ class VersionCheckerSkill(MycroftSkill):
 
             self.speak_dialog('platform.build', data={'build': build})
 
-            mycroft.util.wait_while_speaking()
+            wait_while_speaking()
             self.enclosure.activate_mouth_events()
         else:
             self.speak_dialog('platform.build.none')
@@ -177,7 +177,7 @@ class VersionCheckerSkill(MycroftSkill):
             opsys = re.sub(r'\\[a-z]{1}', ' ', open("/etc/issue").readline())
             # just in case issue file contains cruft decorative or otherwise
             if re.search(r'\w{2,}', opsys):
-                self.speak('On operating system: ' + opsys)
+                self.speak_dialog('system', data={'system': opsys})
         except Exception:
             self.log.exception('/etc/issue read failed. ')
 

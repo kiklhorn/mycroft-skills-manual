@@ -1,30 +1,21 @@
 # These values must also be supported in the recurring.value file
-recurring
-repeating
-each
-every
-daily
-weekdays
-weekends
-mondays
-tuesdays
-wednesdays
-thursdays
-fridays
-saturdays
-sundays
-work days
-workdays
+opakující
+každý
+denně
+všední dny
+výkendy
+pondělky
+úterky
+středy
+čtvrtky
+pátky
+soboty
+neděle
+pracovní dny
 # Yes, it should already catch 'each' and 'every', but Adapt is missing these
-every day
-every weekday
-every morning
-every afternoon
-every evening
-every night
-each day
-each weekday
-each morning
-each afternoon
-each evening
-each night
+každý den
+každý víkend
+každé ráno
+každé odpoledne
+každý večer
+každou noc
