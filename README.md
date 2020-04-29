@@ -2,7 +2,7 @@
 ##########  
 Tested and OK:  
 -mycroft-stop.mycroftai  
-
+-homeassistant.mycroftai
 
 ##########  
 Translated:  
@@ -39,4 +39,4 @@ Translated:
 ##########  
 In work:  
 
-homeassistant.mycroftai
+
