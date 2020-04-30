@@ -1,2 +1,4 @@
-(nainstaluj|přidej) (bata|vývojářskou|předběžnou) (verzi|) {skill}.
-(nainstaluj|přidej) {skill} (beta|vývojářskou|předběžnou) (verzi|).
+(Nainstaluj|Přidej) vývojářskou (verzi|) {skill}.
+(Nainstaluj|Přidej) předběžnou (verzi|) {skill}.
+(Nainstaluj|Přidej) beta (verzi|) {skill}.
+(Nainstaluj|Přidej) {skill} (beta|vývojářskou|předběžnou) (verzi|).

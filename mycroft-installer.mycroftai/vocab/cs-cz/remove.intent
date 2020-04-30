@@ -1,2 +1,4 @@
-(odeber|odinstaluj) (skill|) {skill}
-(odeber|odinstaluj) {skill} (skill|)
+odinstaluj (skill|) {skill}
+odinstaluj {skill} (skill|)
+odeber (skill|) {skill}
+odeber {skill} (skill|)
