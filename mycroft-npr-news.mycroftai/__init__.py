@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from datetime import timedelta
+from datetime import timedelta, datetime
 import feedparser
 import os
 from os.path import join, abspath, dirname
@@ -23,6 +23,7 @@ import time
 import traceback
 from urllib.parse import quote
 from pytz import timezone
+import time
 
 from adapt.intent import IntentBuilder
 from mycroft.audio import wait_while_speaking
@@ -129,7 +130,9 @@ FEEDS = {
             image_path('NOS.png')),
     "OE3": ("Ö3 Nachrichten",
             "https://oe3meta.orf.at/oe3mdata/StaticAudio/Nachrichten.mp3",
-            None),   
+            None),
+    "iROZHLAS": ("iROZHLAS", "https://www.irozhlas.cz/rss/irozhlas",
+            image_path('iROZHLAS.png')),   
 }
 
 
@@ -236,6 +239,100 @@ class NewsSkill(CommonPlaySkill):
                 media_url = data['entries'][0]['links'][0]['href']
         self.log.debug('Playing news from URL: {}'.format(media_url))
         return media_url
+    
+    
+    
+    
+    def is_affirmative(self, utterance, lang='en-us'):
+        affirmatives = ['detail', 'yes', 'sure', 'please do']
+        for word in affirmatives:
+            if word in utterance:
+                return True
+        return False
+    
+    def is_next(self, utterance, lang='en-us'):
+        affirmatives = ['next', 'continue', 'no', 'nope']
+        for word in affirmatives:
+            if word in utterance:
+                return True
+        return False
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    def read_rss(self, url):
+        # Read news that are text only
+        self.log.debug("Read RSS")
+        self.log.debug("Url: " + str(url))
+
+        p = feedparser.parse(url)
+        # Overcome wrong encoding
+        if not p['entries'] and "not well-formed" in str(p['bozo_exception']):
+            rss1 = requests.get(url).content.decode("utf-16")
+            rss1 = rss1.replace("utf-16","unicode")
+            p = feedparser.parse(rss1)
+        entries = p['entries']
+
+        # Count number of entries
+        count=len(entries)
+        self.log.debug("Entries: " + str(count))
+
+        # Loop trought all entries
+        time.sleep(2)
+        for i in range(count):
+            # Read Title
+            self.log.debug("Start Title "+str(i)+": " + str(datetime.now()))
+            self.speak(str(entries[i].title),expect_response=False,wait=True)
+            wait_while_speaking()
+            self.log.debug("End Title "+str(i)+": " + str(datetime.now()))
+            self.log.debug("Count of chars: " + str(len(str(entries[i].title))))
+
+            # Wait while Mycroft speaking (100 chars/6.4 sec)
+            wait = ((len(str(entries[i].title))*6.4)//100)+1
+            self.log.debug("Wait: " + str(wait))
+            time.sleep(wait)
+
+            # Ask question if user want detail
+            self.log.debug("Start Question "+str(i)+": " + str(datetime.now()))
+            response = self.get_response("Detail?", num_retries=0)
+            wait_while_speaking()
+            self.log.debug("End Question "+str(i)+" : " + str(datetime.now()))
+
+            if response and self.is_affirmative(response):
+                # Read description
+                self.log.debug("detail")
+                self.log.debug("Start Detail "+str(i)+": " + str(datetime.now()))
+                self.speak(str(entries[i].description),expect_response=False,wait=True)
+                self.log.debug("End Detail "+str(i)+" : " + str(datetime.now()))
+                self.log.debug("Count of chars "+str(i)+": " + str(len(str(entries[i].description))))
+
+                wait = ((len(str(entries[i].description))*6.4)//100)+1
+                self.log.debug("Wait: " + str(wait))
+                time.sleep(wait)
+            
+            # Check if 5th title and ask if continue
+            if (i+1)%5 ==0:
+                self.log.debug("Q: Next titles?" + str(datetime.now()))
+                response = self.get_response("Next titles?", num_retries=0)
+                wait_while_speaking()
+                if response and self.is_affirmative(response):
+                    continue
+                return
+        return
+
+
+
+
+
 
     @intent_file_handler("PlayTheNews.intent")
     def handle_latest_news_alt(self, message):
@@ -265,22 +362,32 @@ class NewsSkill(CommonPlaySkill):
 
             url = self.get_media_url(rss)
             mime = find_mime(url)
-            # (Re)create Fifo
+
+            # Remove old data file (fifo)
             if os.path.exists(self.STREAM):
                 os.remove(self.STREAM)
-            os.mkfifo(self.STREAM)
-
-            self.log.debug('Running curl {}'.format(url))
-            args = ['curl', '-L', quote(url, safe=":/"), '-o', self.STREAM]
-            self.curl = subprocess.Popen(args)
+            if not mime =="text/html":
+                # Create Fifo
+                os.mkfifo(self.STREAM)
+                args = ['curl', '-L', quote(url, safe=":/"), '-o', self.STREAM]
+                
+                self.log.debug('Running curl {}'.format(url))
+                self.curl = subprocess.Popen(args)
 
             # Show news title, if there is one
             wait_while_speaking()
             # Begin the news stream
             self.log.info('Feed: {}'.format(feed))
-            self.CPS_play(('file://' + self.STREAM, mime))
             self.CPS_send_status(image=image or image_path('generic.png'),
-                                 track=self.now_playing)
+                        track=self.now_playing)
+            self.last_message = (True, message)
+            self.enable_intent('restart_playback')
+            self.log.debug(mime)
+
+            if mime =="text/html":
+                self.read_rss(rss)
+            else:
+                self.CPS_play(('file://' + self.STREAM, mime))
             self.last_message = (True, message)
             self.enable_intent('restart_playback')
 
