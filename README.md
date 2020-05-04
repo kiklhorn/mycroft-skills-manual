@@ -6,6 +6,7 @@ Tested and OK:
 -mycroft-audio-record.mycroftai  
 -mycroft-hello-world.mycroftai  
 -mycroft-installer.mycroftai  
+-mycroft-ip.mycroftai  
 -mycroft-configuration.mycroftai  
 -mycroft-joke.mycroftai  - pyjokes does no contain czech jokes, adult category can be removed (See pyjokes github)  
 -mycroft-naptime.mycroftai  
@@ -26,7 +27,6 @@ Translated:
 -fallback-unknown.mycroftai  
 -fallback-wolfram-alpha.mycroftai  
 -mycroft-date-time.mycroftai  
--mycroft-ip.mycroftai  
 -mycroft-reminder.mycroftai  
 -mycroft-volume.mycroftai  
 -mycroft-spelling.mycroftai  

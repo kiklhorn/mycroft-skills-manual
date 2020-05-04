@@ -17,7 +17,7 @@ import os
 from ifaddr import get_adapters
 
 from adapt.intent import IntentBuilder
-from mycroft.skills.core import MycroftSkill, intent_handler
+from mycroft.skills import MycroftSkill, intent_handler
 import mycroft.audio
 from subprocess import check_output, CalledProcessError
 
