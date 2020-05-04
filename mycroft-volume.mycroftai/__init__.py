@@ -18,7 +18,7 @@ from os.path import dirname, join
 from adapt.intent import IntentBuilder
 from mycroft.audio import wait_while_speaking
 from mycroft.messagebus.message import Message
-from mycroft.skills.core import MycroftSkill, intent_handler
+from mycroft.skills import MycroftSkill, intent_handler
 from mycroft.util import play_wav
 from mycroft.util.parse import extract_number
 

@@ -24,7 +24,7 @@ from mtranslate import translate
 from adapt.intent import IntentBuilder
 from mycroft.api import Api
 from mycroft.messagebus.message import Message
-from mycroft.skills.core import intent_handler
+from mycroft.skills import intent_handler
 from mycroft.util.parse import normalize
 from mycroft.version import check_version
 from mycroft.util.log import LOG
