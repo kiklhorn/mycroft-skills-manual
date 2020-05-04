@@ -40,5 +40,5 @@ Translated:
 ##########  
 In work:  
   
--mycroft-npr-news.mycroftai - needs new parser that reed titles as ther is no czech station with short news in mp3
+-mycroft-npr-news.mycroftai - needs new parser that reed titles as there is no czech station with short news in mp3
 

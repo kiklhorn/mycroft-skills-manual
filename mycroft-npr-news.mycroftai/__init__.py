@@ -293,23 +293,23 @@ class NewsSkill(CommonPlaySkill):
             self.log.debug("Wait: " + str(wait))
             time.sleep(wait)
 
-            # Ask question if user want detail
-            self.log.debug("Start Question "+str(i)+": " + str(datetime.now()))
-            response = self.get_response('description', num_retries=0)
-            wait_while_speaking()
-            self.log.debug("End Question "+str(i)+" : " + str(datetime.now()))
+            ## Ask question if user want detail
+            #self.log.debug("Start Question "+str(i)+": " + str(datetime.now()))
+            #response = self.get_response('description', num_retries=0)
+            #wait_while_speaking()
+            #self.log.debug("End Question "+str(i)+" : " + str(datetime.now()))
 
-            if response and self.is_affirmative(response):
+            #if response and self.is_affirmative(response):
                 # Read description
-                self.log.debug("detail")
-                self.log.debug("Start Detail "+str(i)+": " + str(datetime.now()))
-                self.speak(str(entries[i].description),expect_response=False,wait=True)
-                self.log.debug("End Detail "+str(i)+" : " + str(datetime.now()))
-                self.log.debug("Count of chars "+str(i)+": " + str(len(str(entries[i].description))))
+            self.log.debug("detail")
+            self.log.debug("Start Detail "+str(i)+": " + str(datetime.now()))
+            self.speak(str(entries[i].description),expect_response=False,wait=True)
+            self.log.debug("End Detail "+str(i)+" : " + str(datetime.now()))
+            self.log.debug("Count of chars "+str(i)+": " + str(len(str(entries[i].description))))
 
-                wait = ((len(str(entries[i].description))*6.4)//100)+1
-                self.log.debug("Wait: " + str(wait))
-                time.sleep(wait)
+            wait = ((len(str(entries[i].description))*6.4)//100)+1
+            self.log.debug("Wait: " + str(wait))
+            time.sleep(wait)
             
             # If 5th title, check if there are next news, if so then ask if continue
             if (i+1)%5 ==0 and (i+1)<count:
