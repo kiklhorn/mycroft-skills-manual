@@ -24,6 +24,8 @@ import traceback
 from urllib.parse import quote
 from pytz import timezone
 import time
+from os.path import dirname, join, realpath
+import json
 
 from adapt.intent import IntentBuilder
 from mycroft.audio import wait_while_speaking
@@ -164,6 +166,11 @@ class NewsSkill(CommonPlaySkill):
         self.default_feed = self.translate_namedvalues('country.default')
         # Longer titles or alternative common names of feeds for searching
         self.alt_feed_names = self.translate_namedvalues('alt.feed.name')
+        self.language = self.config_core.get('lang')
+
+        # Confirmations vocabs
+        with open((dirname(realpath(__file__))+"/vocab/"+self.language+"/text.json"),encoding='utf8') as f:
+            self.question_reply = json.load(f)
 
     def CPS_match_query_phrase(self, phrase):
         # Look for a specific news provider
@@ -240,37 +247,22 @@ class NewsSkill(CommonPlaySkill):
         self.log.debug('Playing news from URL: {}'.format(media_url))
         return media_url
     
-    
-    
-    
-    def is_affirmative(self, utterance, lang='en-us'):
-        affirmatives = ['detail', 'yes', 'sure', 'please do']
+    def is_affirmative(self, utterance):
+        affirmatives = self.question_reply.get('affirmative')
         for word in affirmatives:
             if word in utterance:
                 return True
         return False
     
-    def is_next(self, utterance, lang='en-us'):
-        affirmatives = ['next', 'continue', 'no', 'nope']
-        for word in affirmatives:
-            if word in utterance:
+    def is_next(self, utterance):
+        Next = self.question_reply.get('next')
+        for word in Next:
+            if word in Next:
                 return True
         return False
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    # Read news that are text only
     def read_rss(self, url):
-        # Read news that are text only
         self.log.debug("Read RSS")
         self.log.debug("Url: " + str(url))
 
@@ -303,7 +295,7 @@ class NewsSkill(CommonPlaySkill):
 
             # Ask question if user want detail
             self.log.debug("Start Question "+str(i)+": " + str(datetime.now()))
-            response = self.get_response("Detail?", num_retries=0)
+            response = self.get_response('description', num_retries=0)
             wait_while_speaking()
             self.log.debug("End Question "+str(i)+" : " + str(datetime.now()))
 
@@ -319,20 +311,15 @@ class NewsSkill(CommonPlaySkill):
                 self.log.debug("Wait: " + str(wait))
                 time.sleep(wait)
             
-            # Check if 5th title and ask if continue
-            if (i+1)%5 ==0:
+            # If 5th title, check if there are next news, if so then ask if continue
+            if (i+1)%5 ==0 and (i+1)<count:
                 self.log.debug("Q: Next titles?" + str(datetime.now()))
-                response = self.get_response("Next titles?", num_retries=0)
+                response = self.get_response('next.title', num_retries=0)
                 wait_while_speaking()
-                if response and self.is_affirmative(response):
+                if response and (self.is_affirmative(response) or self.is_next(response)):
                     continue
                 return
         return
-
-
-
-
-
 
     @intent_file_handler("PlayTheNews.intent")
     def handle_latest_news_alt(self, message):
