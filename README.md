@@ -4,6 +4,7 @@ Tested and OK:
 
 -homeassistant.mycroftai  
 -mycroft-audio-record.mycroftai  
+-mycroft-date-time.mycroftai  
 -mycroft-configuration.mycroftai  
 -mycroft-hello-world.mycroftai  
 -mycroft-installer.mycroftai   
@@ -27,7 +28,6 @@ Tested and OK:
 ##########  
 Translated:  
 -fallback-wolfram-alpha.mycroftai  
--mycroft-date-time.mycroftai  
 -mycroft-reminder.mycroftai  
 -mycroft-npr-news.mycroftai  
 -mycroft-playback-control.mycroftai  

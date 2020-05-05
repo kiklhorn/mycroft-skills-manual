@@ -18,6 +18,8 @@ import pytz
 import re
 import time
 from astral import Astral
+from os.path import dirname, join, realpath
+import json
 
 import mycroft.audio
 from adapt.intent import IntentBuilder
@@ -28,6 +30,7 @@ from mycroft.util.parse import (extract_datetime, fuzzy_match, extract_number,
                                 normalize)
 from mycroft.util.time import now_utc, to_local, now_local
 from mycroft.skills.core import resting_screen_handler
+
 
 
 def speakable_timezone(tz):
@@ -66,6 +69,11 @@ class TimeSkill(MycroftSkill):
                                            now.hour, now.minute) +
                          datetime.timedelta(seconds=60))
         self.schedule_repeating_event(self.update_display, callback_time, 10)
+        self.language = self.config_core.get('lang')
+
+        # Load translations
+        with open((dirname(realpath(__file__))+"/vocab/"+self.language+"/text.json"),encoding='utf8') as f:
+            self.texts = json.load(f)
 
     # TODO:19.08 Moved to MycroftSkill
     @property
@@ -540,11 +548,11 @@ class TimeSkill(MycroftSkill):
         # Don't pass `now` to `nice_date` as a
         # request on Friday will return "tomorrow"
         saturday_date = ', '.join(nice_date(extract_datetime(
-                        'this saturday')[0]).split(', ')[:2])
+                        self.texts.get('this saturday'))[0]).split(', ')[:2])
         sunday_date = ', '.join(nice_date(extract_datetime(
-                      'this sunday')[0]).split(', ')[:2])
+                      self.texts.get('this sunday'))[0]).split(', ')[:2])
         self.speak_dialog('date.future.weekend', {
-            'direction': 'next',
+            'direction': self.texts.get('next'),
             'saturday_date': saturday_date,
             'sunday_date': sunday_date
         })
@@ -555,11 +563,11 @@ class TimeSkill(MycroftSkill):
         # Don't pass `now` to `nice_date` as a
         # request on Monday will return "yesterday"
         saturday_date = ', '.join(nice_date(extract_datetime(
-                        'this saturday')[0]).split(', ')[:2])
+                        self.texts.get('previous saturday'))[0]).split(', ')[:2])
         sunday_date = ', '.join(nice_date(extract_datetime(
-                      'this sunday')[0]).split(', ')[:2])
+                      self.texts.get('previous sunday'))[0]).split(', ')[:2])
         self.speak_dialog('date.last.weekend', {
-            'direction': 'last',
+            'direction': self.texts.get('last'),
             'saturday_date': saturday_date,
             'sunday_date': sunday_date
         })
