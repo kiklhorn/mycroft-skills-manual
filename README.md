@@ -20,6 +20,7 @@ Tested and OK:
 -fallback-query.mycroftai  
 -fallback-unknown.mycroftai  
 -mycroft-version-checker.mycroftai  
+-mycroft-volume.mycroftai  
 -mycroft-wiki.mycroftai  
 
 ##########  
@@ -27,7 +28,6 @@ Translated:
 -fallback-wolfram-alpha.mycroftai  
 -mycroft-date-time.mycroftai  
 -mycroft-reminder.mycroftai  
--mycroft-volume.mycroftai  
 -mycroft-spelling.mycroftai  
 -mycroft-npr-news.mycroftai  
 -mycroft-playback-control.mycroftai  
