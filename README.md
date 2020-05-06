@@ -24,10 +24,10 @@ Tested and OK:
 -mycroft-version-checker.mycroftai  
 -mycroft-volume.mycroftai  
 -mycroft-wiki.mycroftai  
+-fallback-wolfram-alpha.mycroftai  
 
 ##########  
 Translated:  
--fallback-wolfram-alpha.mycroftai  
 -mycroft-reminder.mycroftai  
 -mycroft-npr-news.mycroftai  
 -mycroft-playback-control.mycroftai  

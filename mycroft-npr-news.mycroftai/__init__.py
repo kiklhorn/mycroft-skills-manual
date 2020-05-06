@@ -291,7 +291,7 @@ class NewsSkill(CommonPlaySkill):
             # Wait while Mycroft speaking (100 chars/6.4 sec)
             wait = ((len(str(entries[i].title))*6.4)//100)+1
             self.log.debug("Wait: " + str(wait))
-            time.sleep(wait)
+            ##time.sleep(wait)
 
             ## Ask question if user want detail
             #self.log.debug("Start Question "+str(i)+": " + str(datetime.now()))
@@ -309,7 +309,7 @@ class NewsSkill(CommonPlaySkill):
 
             wait = ((len(str(entries[i].description))*6.4)//100)+1
             self.log.debug("Wait: " + str(wait))
-            time.sleep(wait)
+            ##time.sleep(wait)
             
             # If 5th title, check if there are next news, if so then ask if continue
             if (i+1)%5 ==0 and (i+1)<count:
