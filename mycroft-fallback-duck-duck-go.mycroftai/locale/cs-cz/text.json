@@ -1,0 +1,10 @@
+{
+  "question_words":["kdo", "koho", "co", "kdy"],
+  "question_verbs": [" je", " jsou", " dělal", " byl", " byly"],
+  "articles": ["ten"],
+  "start_words": ["ja", "a", "z", "když", "ten",
+    "protože", "od", "pro", "podle", "kdy",
+     "mezi", "kdo", "byl", "v"],
+    "is_verb" : " je ",
+    "in_word" : "v "
+}   

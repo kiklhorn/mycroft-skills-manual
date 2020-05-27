@@ -1,2 +1,23 @@
-přidej (nové|) upozornění {reminder} (v|na) ({timedate}|zítra|den po {date})
-připomeň mi (abych|) {reminder} (v|na) ({timedate}|zítra|den po {date})
+přidej (nové|) upozornění na {reminder} na zítra
+přidej (nové|) upozornění na zítra na {reminder}
+přidej na zítra (nové|) upozornění na {reminder}
+přidej (nové|) upozornění na {reminder} na den po {date}
+přidej (nové|) upozornění na {reminder} (v|ve|na) {timedate}
+připomeň mi (abych|) zítra {reminder}
+připomeň mi zítra (abych|) {reminder}
+připomeň mi (abych|) {reminder} (v|ve|na) {timedate}
+připomeň mi (abych|) {reminder} (v|ve|na) den po {date}
+upozorni mě zítra (abych|na) {reminder}
+upozorni mě (abych|na) zítra {reminder}
+upozorni mě (abych|na) {reminder} (v|ve|na) {timedate}
+upozorni mě (abych|na) {reminder} (v|ve|na) den po {date}
+mohl by jsi mi zítra připomenout {reminder}
+mohl by jsi mi připomenout {reminder} zítra
+mohl by jsi mi připomenout {reminder} den po {date}
+mohl by jsi mi připomenout {reminder} (v|ve|na) {timedate}
+
+
+
+
+
+

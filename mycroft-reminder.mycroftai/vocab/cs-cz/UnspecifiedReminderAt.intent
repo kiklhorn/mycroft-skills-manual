@@ -1,2 +1,4 @@
-(můžeš|mohl by jsi|) (mi|) připomenout (na|v) {timedate}
-(můžeš|mohl by jsi|) (mi|) přidat připomenutí (na|v) {timedate}
+(můžeš|mohl by jsi|) (mi|) připomenout (zítra|) (na|v|ve) {timedate}
+(můžeš|mohl by jsi|) (mi|) přidat upozornění (na|) (zítra|)  (na|v|ve) {timedate}
+
+(můžeš|mohl by jsi|) (mi|) přidej upozornění (na|v|ve) {timedate}

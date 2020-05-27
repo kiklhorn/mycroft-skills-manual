@@ -20,6 +20,10 @@ from mycroft.version import check_version
 import ddg3 as ddg
 
 from mycroft.skills.common_query_skill import CommonQuerySkill, CQSMatchLevel
+from mycroft.configuration import Configuration
+from os.path import dirname, join, realpath
+import json
+from mtranslate import translate
 
 
 def split_sentences(text):
@@ -41,21 +45,31 @@ def split_sentences(text):
 
 
 class DuckduckgoSkill(CommonQuerySkill):
+    config = Configuration.get()
+    # Set the active lang to match the configured one
+    lang=(config.get('lang', 'en-us'))
+
+    # Confirmations vocabs
+    with open((dirname(realpath(__file__))+"/locale/"+lang+"/text.json"),encoding='utf8') as f:
+        texts = json.load(f)
+    
+    
     # Only ones that make sense in
     # <question_word> <question_verb> <noun>
-    question_words = ['who', 'whom', 'what', 'when']
+    question_words = texts.get('question_words')
     # Note the spaces
-    question_verbs = [' is', '\'s', 's', ' are', '\'re',
-                      're', ' did', ' was', ' were']
-    articles = ['a', 'an', 'the', 'any']
-    start_words = ['is', 'and', 'a', 'of', 'if', 'the',
-                   'because', 'since', 'for', 'by', 'from',
-                   'when', 'between', 'who', 'was', 'in']
-    is_verb = ' is '
-    in_word = 'in '
+    question_verbs = texts.get('question_verbs')
+    articles = texts.get('articles')
+    start_words = texts.get('start_words')
+    is_verb = texts.get('is_verb')
+    in_word = texts.get('in_word')
 
     def __init__(self):
         super(DuckduckgoSkill, self).__init__()
+        self.autotranslate = self.settings.get('autotranslate', True)
+        self.log.debug("autotranslate: {}".format(self.autotranslate))
+        config = Configuration.get()
+        self.lang = config.get('lang', 'en-us')
 
     @classmethod
     def format_related(cls, abstract, query):
@@ -106,20 +120,44 @@ class DuckduckgoSkill(CommonQuerySkill):
         if len(query) == 0:
             return 0.0
 
-        r = ddg.query(query)
+        if self.autotranslate and self.lang[:2] != 'en':
+            query_tr = translate(query, from_language=self.lang[:2], 
+                            to_language='en')
+            self.log.debug("translation: {}".format(query_tr))
+
+        r = ddg.query(query_tr)
 
         LOG.debug('Query: ' + str(query))
+        LOG.debug('Query_tr: ' + str(query_tr))
         LOG.debug('Type: ' + r.type)
 
         if (r.answer is not None and r.answer.text and
                 "HASH" not in r.answer.text):
-            return(query + self.is_verb + r.answer.text + '.')
+            LOG.debug('Answer: ' + str(r.answer.text))
+            if self.autotranslate and self.lang[:2] != 'en':
+                    response = translate(r.answer.text, from_language='en', 
+                                         to_language=self.lang[:2])
+            else:
+                response = r.answer.text
+            return(query + self.is_verb + response + '.')
+
         elif len(r.abstract.text) > 0:
+            LOG.debug('Abstract: ' + str(r.abstract.text))
             sents = split_sentences(r.abstract.text)
+            if self.autotranslate and self.lang[:2] != 'en':
+                for sent in sents:
+                    sent = translate(sent, from_language='en', 
+                                         to_language=self.lang[:2])
             return sents[0]
+
         elif len(r.related) > 0 and len(r.related[0].text) > 0:
             related = split_sentences(r.related[0].text)[0]
-            return(self.format_related(related, query))
+            answer = self.format_related(related, query)
+            LOG.debug('Related: ' + str(answer))
+            if self.autotranslate and self.lang[:2] != 'en':
+                    answer= translate(answer, from_language='en', 
+                                         to_language=self.lang[:2])
+            return(answer)
         else:
             return None
 

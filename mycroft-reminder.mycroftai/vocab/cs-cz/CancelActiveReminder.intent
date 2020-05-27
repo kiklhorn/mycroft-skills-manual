@@ -1,4 +1,6 @@
-(ok |okay |)zruš (všechny|všechna|)(má|)(aktivní |)připomenutí
-(ok |okay |)zastav (všechny|všechna|)(má|)(aktivní |)připomenutí
-(ok |okay |)odeber (všechny|všechna|)(má|)(aktivní |)připomenutí
-(ok |okay |)potvrť (všechny|všechna|)(má|)(aktivní |)připomenutí
+zrušit připomenutí
+(ok |okay |)zrušit (všechny|všechna|)(má|)(aktivní|) (připomenutí|upozornění)
+(ok |okay |)zruš (všechny|všechna|)(má|)(aktivní|) (připomenutí|upozornění)
+(ok |okay |)zastav (všechny|všechna|)(má|)(aktivní|) (připomenutí|upozornění)
+(ok |okay |)odeber (všechny|všechna|)(má|)(aktivní|) (připomenutí|upozornění)
+(ok |okay |)potvrť (všechny|všechna|)(má|)(aktivní|) (připomenutí|upozornění)

@@ -30,12 +30,15 @@ import json
 from adapt.intent import IntentBuilder
 from mycroft.audio import wait_while_speaking
 from mycroft.messagebus.message import Message
-from mycroft.skills.core import intent_handler, intent_file_handler
+from mycroft.skills import intent_handler, intent_file_handler
 from mycroft.skills.common_play_skill import CommonPlaySkill, CPSMatchLevel
 from mycroft.util import get_cache_directory
 from mycroft.util.parse import fuzzy_match
 from mycroft.util.time import now_local
 
+from mycroft.util.parse import (extract_datetime, fuzzy_match, extract_number,
+                                normalize)
+from mycroft.util.format import (nice_date_time, nice_number)
 
 def image_path(filename):
     return 'file://' + join(dirname(abspath(__file__)), 'images', filename)
@@ -280,45 +283,22 @@ class NewsSkill(CommonPlaySkill):
 
         # Loop trought all entries
         time.sleep(2)
+        self.is_reading = False
         for i in range(count):
-            # Read Title
-            self.log.debug("Start Title "+str(i)+": " + str(datetime.now()))
-            self.speak(str(entries[i].title),expect_response=False,wait=True)
-            wait_while_speaking()
-            self.log.debug("End Title "+str(i)+": " + str(datetime.now()))
-            self.log.debug("Count of chars: " + str(len(str(entries[i].title))))
+            self.is_reading = True
+            message = str(entries[i].description)
+            self.speak(message,expect_response=False,wait=True)
 
-            # Wait while Mycroft speaking (100 chars/6.4 sec)
-            wait = ((len(str(entries[i].title))*6.4)//100)+1
-            self.log.debug("Wait: " + str(wait))
-            ##time.sleep(wait)
-
-            ## Ask question if user want detail
-            #self.log.debug("Start Question "+str(i)+": " + str(datetime.now()))
-            #response = self.get_response('description', num_retries=0)
-            #wait_while_speaking()
-            #self.log.debug("End Question "+str(i)+" : " + str(datetime.now()))
-
-            #if response and self.is_affirmative(response):
-                # Read description
-            self.log.debug("detail")
-            self.log.debug("Start Detail "+str(i)+": " + str(datetime.now()))
-            self.speak(str(entries[i].description),expect_response=False,wait=True)
-            self.log.debug("End Detail "+str(i)+" : " + str(datetime.now()))
-            self.log.debug("Count of chars "+str(i)+": " + str(len(str(entries[i].description))))
-
-            wait = ((len(str(entries[i].description))*6.4)//100)+1
-            self.log.debug("Wait: " + str(wait))
-            ##time.sleep(wait)
-            
             # If 5th title, check if there are next news, if so then ask if continue
-            if (i+1)%5 ==0 and (i+1)<count:
+            if (i+1)%2 ==0 and (i+1)<count:
                 self.log.debug("Q: Next titles?" + str(datetime.now()))
                 response = self.get_response('next.title', num_retries=0)
                 wait_while_speaking()
                 if response and (self.is_affirmative(response) or self.is_next(response)):
                     continue
+                self.is_reading = False 
                 return
+        self.is_reading = False
         return
 
     @intent_file_handler("PlayTheNews.intent")

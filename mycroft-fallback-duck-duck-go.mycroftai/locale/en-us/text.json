@@ -1,0 +1,11 @@
+{
+  "question_words":["who", "whom", "what", "when"],
+  "question_verbs": [" is", "\\'s", "s", " are", "\\'re",
+    "re", " did", " was", " were"],
+  "articles": ["a", "an", "the", "any"],
+  "start_words": ["is", "and", "a", "of", "if", "the",
+    "because", "since", "for", "by", "from",
+    "when", "between", "who", "was", "in"],
+    "is_verb" : " is ",
+    "in_word" : "in "
+}   

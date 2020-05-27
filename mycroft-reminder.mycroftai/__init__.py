@@ -14,7 +14,7 @@
 
 
 import time
-from os.path import dirname, join
+from os.path import dirname, join, realpath
 from datetime import datetime, timedelta
 from mycroft import MycroftSkill, intent_file_handler
 from mycroft.util.parse import extract_datetime, normalize
@@ -23,6 +23,7 @@ from mycroft.util.format import nice_time, nice_date
 from mycroft.util.log import LOG
 from mycroft.util import play_wav
 from mycroft.messagebus.client import MessageBusClient
+import json
 
 REMINDER_PING = join(dirname(__file__), 'twoBeep.wav')
 
@@ -46,18 +47,6 @@ def is_tomorrow(d):
     return d.date() == now_local().date() + timedelta(days=1)
 
 
-def contains_datetime(utterance, lang='en-us'):
-    return extract_datetime(utterance) is not None
-
-
-def is_affirmative(utterance, lang='en-us'):
-    affirmatives = ['yes', 'sure', 'please do']
-    for word in affirmatives:
-        if word in utterance:
-            return True
-    return False
-
-
 class ReminderSkill(MycroftSkill):
     def __init__(self):
         super(ReminderSkill, self).__init__()
@@ -74,10 +63,24 @@ class ReminderSkill(MycroftSkill):
             self.bus.on('speak', self.prime)
             self.bus.on('mycroft.skill.handler.complete', self.notify)
             self.bus.on('mycroft.skill.handler.start', self.reset)
+        
+        # Confirmations vocabs
+        with open((dirname(realpath(__file__))+"/vocab/"+self.lang+"/text.json"),encoding='utf8') as f:
+            self.texts = json.load(f)
 
         # Reminder checker event
         self.schedule_repeating_event(self.__check_reminder, datetime.now(),
                                       0.5 * MINUTES, name='reminder')
+    
+    def is_affirmative(self, utterance):
+        affirmatives = self.texts.get('affirmative')
+        for word in affirmatives:
+            if word in utterance:
+                return True
+        return False
+
+    def contains_datetime(self, utterance):
+        return extract_datetime(utterance, lang=self.lang) is not None
 
     def add_notification(self, identifier, note, expiry):
         self.notes[identifier] = (note, expiry)
@@ -183,11 +186,11 @@ class ReminderSkill(MycroftSkill):
 
     def date_str(self, d):
         if is_today(d):
-            return 'today'
+            return self.texts.get('today')
         elif is_tomorrow(d):
-            return 'tomorrow'
+            return self.texts.get('tomorrow')
         else:
-            return nice_date(d.date())
+            return nice_date(d.date(), lang=self.lang)
 
     @intent_file_handler('ReminderAt.intent')
     def add_new_reminder(self, msg=None):
@@ -197,11 +200,12 @@ class ReminderSkill(MycroftSkill):
             return self.add_unnamed_reminder_at(msg)
 
         # mogrify the response TODO: betterify!
-        reminder = (' ' + reminder).replace(' my ', ' your ').strip()
-        reminder = (' ' + reminder).replace(' our ', ' your ').strip()
+        if self.lang == "en-us": 
+            reminder = (' ' + reminder).replace(' my ', ' your ').strip()
+            reminder = (' ' + reminder).replace(' our ', ' your ').strip()
         utterance = msg.data['utterance']
-        reminder_time, rest = (extract_datetime(utterance, now_local(),
-                                                self.lang,
+        reminder_time, rest = (extract_datetime(text=utterance, anchorDate=now_local(),
+                                                lang=self.lang,
                                                 default_time=DEFAULT_TIME) or
                                (None, None))
 
@@ -220,14 +224,14 @@ class ReminderSkill(MycroftSkill):
         # Choose dialog depending on the date
         if is_today(reminder_time):
             self.speak_dialog('SavingReminder',
-                              {'timedate': nice_time(reminder_time)})
+                              {'timedate': nice_time(reminder_time, lang=self.lang)})
         elif is_tomorrow(reminder_time):
             self.speak_dialog('SavingReminderTomorrow',
-                              {'timedate': nice_time(reminder_time)})
+                              {'timedate': nice_time(reminder_time, lang=self.lang)})
         else:
             self.speak_dialog('SavingReminderDate',
-                              {'time': nice_time(reminder_time),
-                               'date': nice_date(reminder_time)})
+                              {'time': nice_time(reminder_time, lang=self.lang),
+                               'date': nice_date(reminder_time, lang=self.lang)})
 
         # Store reminder
         serialized = serialize(reminder_time)
@@ -248,22 +252,37 @@ class ReminderSkill(MycroftSkill):
             for the reminder.
         """
         reminder = msg.data['reminder']
+        # Handle the case where padaqtious misstook time/date by reminder 
+        if self.contains_datetime(msg.data['reminder']):
+            msg.data['timedate'] = msg.data['reminder']
+            msg.data['reminder'] = None 
+            return self.add_unnamed_reminder_at(msg)
+
         # Handle the case where padatious misses the time/date
-        if contains_datetime(msg.data['utterance']):
+        if self.contains_datetime(msg.data['utterance']):
             return self.add_new_reminder(msg)
 
         response = self.get_response('ParticularTime')
-        if response and is_affirmative(response):
+        if response and self.is_affirmative(response):
             # Check if a time was also in the response
-            dt, rest = extract_datetime(response) or (None, None)
-            if dt:
+            dt, rest = (extract_datetime(response, now_local(),
+                                                self.lang,
+                                                default_time=DEFAULT_TIME) or
+                               (None, None))
+            if dt is None:
                 # No time found in the response
                 response = self.get_response('SpecifyTime')
-                dt, rest = extract_datetime(response) or None, None
+                if not response is None:
+                    dt, rest = (extract_datetime(response, now_local(),
+                                                self.lang,
+                                                default_time=DEFAULT_TIME) or
+                               (None, None))
                 if dt:
-                    self.speak('Fine, be that way')
+                    self.speak_dialog('Understood')
+                else:
+                    #no time found
+                    self.speak_dialog('NoDateTimeCancel')
                     return
-
             self.__save_reminder_local(reminder, dt)
         else:
             LOG.debug('put into general reminders')
@@ -321,7 +340,8 @@ class ReminderSkill(MycroftSkill):
             if len(reminders) > 0:
                 for r in reminders:
                     reminder, dt = (r[0], deserialize(r[1]))
-                    self.speak(reminder + ' at ' + nice_time(dt))
+                    self.speak(reminder + ' ' + self.texts.get('at')
+                             + ' ' + nice_time(dt))
                 return
         self.speak_dialog('NoUpcoming')
 
@@ -335,16 +355,16 @@ class ReminderSkill(MycroftSkill):
 
             if is_today(next_reminder[1]):
                 self.speak_dialog('NextToday',
-                                  data={'time': nice_time(next_reminder[1]),
+                                  data={'time': nice_time(next_reminder[1], lang=self.lang),
                                         'reminder': next_reminder[0]})
             elif is_tomorrow(next_reminder[1]):
                 self.speak_dialog('NextTomorrow',
-                                  data={'time': nice_time(next_reminder[1]),
+                                  data={'time': nice_time(next_reminder[1], lang=self.lang),
                                         'reminder': next_reminder[0]})
             else:
                 self.speak_dialog('NextOtherDate',
-                                  data={'time': nice_time(next_reminder[1]),
-                                        'date': nice_date(next_reminder[1]),
+                                  data={'time': nice_time(next_reminder[1], lang=self.lang),
+                                        'date': nice_date(next_reminder[1], lang=self.lang),
                                         'reminder': next_reminder[0]})
         else:
             self.speak_dialog('NoUpcoming')
