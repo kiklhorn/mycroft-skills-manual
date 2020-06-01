@@ -26,14 +26,14 @@ Tested and OK:
 -mycroft-wiki.mycroftai  
 -fallback-wolfram-alpha.mycroftai  
 -mycroft-reminder.mycroftai  
-
+-mycroft-alarm.mycroftai  
+  
 ##########  
 Translated:  
 -mycroft-npr-news.mycroftai  
 -mycroft-playback-control.mycroftai  
 -mycroft-timer.mycroftai  
 -mycroft-weather.mycroftai  
--mycroft-alarm.mycroftai  
 -mycroft-fallback-duck-duck-go.mycroftai  
 
 ##########  

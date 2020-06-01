@@ -1,1 +1,1 @@
-{"max_alarm_secs": 600, "sound": "beep", "start_quiet": false, "alarm": [], "__mycroft_skill_firstrun": false}
+{"max_alarm_secs": 600, "sound": "beep", "start_quiet": false, "alarm": [{"timestamp": 1590955920.0, "repeat_rule": "", "name": ""}, {"timestamp": 1590987600.0, "repeat_rule": "", "name": ""}, {"timestamp": 1590988200.0, "repeat_rule": "", "name": ""}], "__mycroft_skill_firstrun": false}

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import time
-from os.path import join, abspath, dirname
+from os.path import join, abspath, dirname, realpath
 from datetime import datetime, timedelta
 import os.path
 from alsaaudio import Mixer
@@ -31,6 +31,7 @@ from mycroft.util.time import (
     to_utc, default_timezone, to_local, now_local, now_utc)
 
 from mycroft.util.time import to_system
+import json
 
 
 # WORKING PHRASES/SEQUENCES:
@@ -126,6 +127,10 @@ class AlarmSkill(MycroftSkill):
         self.settings.setdefault('start_quiet', True)
         self.settings.setdefault('alarm', [])
 
+    @property
+    def use_24hour(self):
+        return self.config_core.get('time_format') == 'full'
+
     def dump_alarms(self, tag=""):
         # Useful when debugging
         dump = "\n" + "="*30 + " ALARMS " + tag + " " + "="*30 + "\n"
@@ -135,7 +140,7 @@ class AlarmSkill(MycroftSkill):
         dt = datetime.fromtimestamp(now_ts)
         dump += "now = {} ({})\n".format(
             nice_time(self.get_alarm_local(timestamp=now_ts),
-                      speech=False, use_ampm=True),
+                      speech=False, use_ampm=not self.use_24hour, use_24hour = self.use_24hour),
             now_ts)
         dump += "      U{} L{}\n".format(to_utc(dt), to_local(dt))
         dump += "\n\n"
@@ -145,13 +150,13 @@ class AlarmSkill(MycroftSkill):
             dt = self.get_alarm_local(alarm)
             dump += "alarm[{}] - {} \n".format(idx, alarm)
             dump += "           Next: {} {}\n".format(
-                nice_time(dt, speech=False, use_ampm=True),
+                nice_time(dt, speech=False, use_ampm= not self.use_24hour, use_24hour = self.use_24hour),
                 nice_date(dt, now=now_local()))
             dump += "                 U{} L{}\n".format(dt, to_local(dt))
             if 'snooze' in alarm:
                 dtOrig = self.get_alarm_local(timestamp=alarm['snooze'])
                 dump += "           Orig: {} {}\n".format(
-                    nice_time(dtOrig, speech=False, use_ampm=True),
+                    nice_time(dtOrig, speech=False, use_ampm= not self.use_24hour, use_24hour = self.use_24hour),
                     nice_date(dtOrig, now=now_local()))
             idx += 1
 
@@ -175,6 +180,10 @@ class AlarmSkill(MycroftSkill):
 
         # Support query for active alarms from other skills
         self.add_event('private.mycroftai.has_alarm', self.on_has_alarm)
+
+         # Confirmations vocabs
+        with open((dirname(realpath(__file__))+"/vocab/"+self.lang+"/text.json"),encoding='utf8') as f:
+            self.texts = json.load(f)
 
     def on_has_alarm(self, message):
         # Reply to requests for alarm on/off status
@@ -384,13 +393,13 @@ class AlarmSkill(MycroftSkill):
                 return
 
         # Get the time
-        when, utt_no_datetime = extract_datetime(utt) or (None, utt)
+        when, utt_no_datetime = extract_datetime(utt, lang=self.lang) or (None, utt)
 
         # Get name from leftover string from extract_datetime
         name = self._get_alarm_name(utt_no_datetime)
 
         # Will return dt of unmatched string
-        today = extract_datetime("today")
+        today = extract_datetime(self.texts.get('today'), lang=self.lang)
         today = today[0]
 
         # Check the time if it's midnight. This is to check if the user
@@ -407,7 +416,7 @@ class AlarmSkill(MycroftSkill):
             if not r:
                 self.speak_dialog("alarm.schedule.cancelled")
                 return
-            when_temp = extract_datetime(r)
+            when_temp = extract_datetime(r, lang=self.lang)
             if when_temp is not None:
                 when_temp = when_temp[0]
                 # TODO add check for midnight
@@ -428,14 +437,14 @@ class AlarmSkill(MycroftSkill):
         confirmed_time = False
         while (not when or when == today) and not confirmed_time:
             if recur:
-                t = nice_time(alarm_time, use_ampm=True)
+                t = nice_time(alarm_time, use_ampm=not self.use_24hour, use_24hour = self.use_24hour)
                 conf = self.ask_yesno('confirm.recurring.alarm',
                                       data={
                                           'time': t,
                                           'recurrence': self._recur_desc(recur)
                                       })
             else:
-                t = nice_date_time(alarm_time, now=today, use_ampm=True)
+                t = nice_date_time(alarm_time, now=today, use_ampm= not self.use_24hour, use_24hour = self.use_24hour, lang=self.lang)
                 conf = self.ask_yesno('confirm.alarm', data={'time': t})
             if not conf:
                 return
@@ -444,7 +453,7 @@ class AlarmSkill(MycroftSkill):
                 confirmed_time = True
             else:
                 # check if a new (corrected) time was given
-                when = extract_datetime(conf)
+                when = extract_datetime(conf, lang=self.lang)
                 if when is not None:
                     when = when[0]
                 if not when or when == today:
@@ -460,7 +469,7 @@ class AlarmSkill(MycroftSkill):
             if alarm_time_ts > now_ts:
                 alarm = self.set_alarm(alarm_time, name)
             else:
-                if ('today' in utt) or ('tonight' in utt):
+                if (self.texts.get('today') in utt) or (self.texts.get('tonight') in utt):
                     self.speak_dialog('alarm.past')
                     return
                 else:
@@ -482,7 +491,7 @@ class AlarmSkill(MycroftSkill):
             self.speak_dialog("alarm.scheduled")
         else:
             t = self._describe(alarm)
-            reltime = nice_relative_time(self.get_alarm_local(alarm))
+            reltime = nice_relative_time(self.get_alarm_local(alarm), lang=self.lang)
             if recur:
                 self.speak_dialog("recurring.alarm.scheduled.for.time",
                                   data={"time": t, "rel": reltime})
@@ -530,10 +539,6 @@ class AlarmSkill(MycroftSkill):
 
         return matched
 
-    @property
-    def use_24hour(self):
-        return self.config_core.get('time_format') == 'full'
-
     def _describe(self, alarm):
         if alarm["repeat_rule"]:
             # Describe repeating alarms
@@ -557,12 +562,12 @@ class AlarmSkill(MycroftSkill):
             if alarm["name"] != "":
                 dialog = dialog + '.named'
             return self.translate(dialog,
-                                  data={'time': nice_time(dt, use_ampm=True),
+                                  data={'time': nice_time(dt, use_ampm=not self.use_24hour,speech=True, use_24hour = self.use_24hour, lang=self.lang),
                                         'recurrence': desc,
                                         'name': alarm["name"]})
         else:
             dt = self.get_alarm_local(alarm)
-            dt_string = nice_date_time(dt, now=now_local(), use_ampm=True)
+            dt_string = nice_date_time(dt, now=now_local(), use_ampm= not self.use_24hour, use_24hour = False, lang=self.lang)
             if alarm["name"]:
                 return self.translate('alarm.named',
                                       data={'datetime': dt_string,
@@ -602,7 +607,7 @@ class AlarmSkill(MycroftSkill):
             return
         elif status == 'Next':
             reltime = nice_relative_time(
-                self.get_alarm_local(alarms[0])
+                self.get_alarm_local(alarms[0]), lang=self.lang
             )
 
             self.speak_dialog("next.alarm",
@@ -613,7 +618,7 @@ class AlarmSkill(MycroftSkill):
         else:
             if total == 1:
                 reltime = nice_relative_time(
-                    self.get_alarm_local(alarms[0])
+                    self.get_alarm_local(alarms[0]), lang=self.lang
                 )
                 self.speak_dialog('alarms.list.single',
                                   data={'item': desc[0],
@@ -647,10 +652,10 @@ class AlarmSkill(MycroftSkill):
             return (status[2], None)
 
         # Extract Alarm Time
-        when, utt_no_datetime = extract_datetime(utt) or (None, None)
+        when, utt_no_datetime = extract_datetime(utt, lang=self.lang) or (None, None)
 
         # Will return dt of unmatched string
-        today = extract_datetime("today")
+        today = extract_datetime(self.texts.get('today'), lang=self.lang)
         today = today[0]
 
         # Check the time if it's midnight. This is to check if the user
@@ -690,7 +695,7 @@ class AlarmSkill(MycroftSkill):
         utt = utt_no_datetime or utt
 
         # Extract Ordinal/Cardinal Numbers
-        number = extract_number(utt, ordinals=True)
+        number = extract_number(utt, ordinals=True, lang=self.lang)
         if number and number > 0:
             number = int(number)
         else:
@@ -1099,7 +1104,7 @@ class AlarmSkill(MycroftSkill):
 
     def _render_time(self, datetime):
         # Show the time in numbers "8:00 AM"
-        timestr = nice_time(datetime, speech=False, use_ampm=True,
+        timestr = nice_time(datetime, speech=False, use_ampm= not self.use_24hour,
                             use_24hour=self.use_24hour)
         x = 16 - ((len(timestr)*4) // 2)  # centers on display
         if not self.use_24hour:
@@ -1132,6 +1137,35 @@ def create_skill():
 ##########################################################################
 # TODO: Move to mycroft.util.format and support translation
 def nice_relative_time(when, relative_to=None, lang=None):
+    """ Create a relative phrase to roughly describe a datetime
+
+    Examples are "25 seconds", "tomorrow", "7 days".
+
+    Args:
+        when (datetime): Local timezone
+        relative_to (datetime): Baseline for relative time, default is now()
+        lang (str, optional): Defaults to "en-us".
+    Returns:
+        str: Relative description of the given time
+    """
+    #if lang_code == "en":
+    #    return normalize_en(text, remove_articles)
+    #elif lang_code == "cs":
+    #    return normalize_cs(text, remove_articles)
+    # TODO: Normalization for other languages
+    #_log_unsupported_language(lang_code,
+    #                          ['en', 'cs'])
+    #return text
+
+    if lang == "en-us":
+        return nice_relative_time_en(when, relative_to, lang)
+    elif lang == "cs-cz":
+        return nice_relative_time_cs(when, relative_to, lang)
+
+
+
+
+def nice_relative_time_en(when, relative_to=None, lang=None):
     """ Create a relative phrase to roughly describe a datetime
 
     Examples are "25 seconds", "tomorrow", "7 days".
@@ -1178,3 +1212,59 @@ def nice_relative_time(when, relative_to=None, lang=None):
         return "1 day"
     else:
         return "{} days".format(days)
+
+def nice_relative_time_cs(when, relative_to=None, lang=None):
+    """ Create a relative phrase to roughly describe a datetime
+
+    Examples are "25 seconds", "tomorrow", "7 days".
+
+    Args:
+        when (datetime): Local timezone
+        relative_to (datetime): Baseline for relative time, default is now()
+        lang (str, optional): Defaults to "en-us".
+    Returns:
+        str: Relative description of the given time
+    """
+    if relative_to:
+        now = relative_to
+    else:
+        now = now_local()
+    delta = (to_local(when) - now)
+
+    if delta.total_seconds() < 1:
+        return "teď"
+
+    if delta.total_seconds() < 90:
+        if delta.total_seconds() == 1:
+            return "jednu vteřinu"
+        elif 1 < delta.total_seconds() < 5:
+            return "{} vteřiny".format(int(delta.total_seconds()))
+        else:
+            return "{} vteřin".format(int(delta.total_seconds()))
+
+    minutes = int((delta.total_seconds()+30) // 60)  # +30 to round minutes
+    if minutes < 90:
+        if minutes == 1:
+            return "jedna minuta"
+        elif 1 < minutes < 5:
+            return "{} minuty".format(minutes)    
+        else:
+            return "{} minut".format(minutes)
+
+    hours = int((minutes+30) // 60)  # +30 to round hours
+    if hours < 36:
+        if hours == 1:
+            return "jedna hodina"
+        elif 1 < hours < 5:
+            return "{} hodiny".format(hours)
+        else:
+            return "{} hodin".format(hours)
+
+    # TODO: "2 weeks", "3 months", "4 years", etc
+    days = int((hours+12) // 24)  # +12 to round days
+    if days == 1:
+        return "1 den"
+    elif 1 < days < 5:
+        return "{} dny".format(days)
+    else:
+        return "{} dní".format(days)
