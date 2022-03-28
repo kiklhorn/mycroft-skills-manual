@@ -41,3 +41,5 @@ In work:
   
 -mycroft-npr-news.mycroftai - Alfa version with new rss text news parser/reader - there is no czech station with short news in mp3
 
+https://translate.mycroft.ai/cs/
+https://github.com/MycroftAI/lingua-franca/issues/101
